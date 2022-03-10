@@ -1,3 +1,6 @@
+import { Token } from "graphql";
+import { TokenContext } from "../Contexte/Context";
+
 const API_URL = 'http://localhost:4000'
 
 const SIGN_IN =
@@ -5,6 +8,19 @@ const SIGN_IN =
 
 const SIGN_UP =
     'mutation($username:String!, $password:String!){signUp(username:$username, password:$password)}';
+
+const TASK_LISTS = 
+    'query($username: String!) {taskLists(where: { owner: { username: $username } }) { id title }}';
+
+const CREATE_TASK_LISTS = 'mutation($title: String!, $username: String!) {createTaskLists(input: { title: $title owner: { connect: { where: { username: $username } } }}) {taskLists {id title owner { username } }}}'
+
+const DELETE_TASK_LISTS = 'mutation($id: ID!) {deleteTaskLists(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
+
+const TASKS = 'query($id: ID!) {tasks {id content done belongsTo (where: {id: $id}) {id title}}}';
+
+const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, done: false, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
+
+const DELETE_TASK = 'mutation($id: ID!) {deleteTasks(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
 
 export function signIn (username, password) {
     return fetch(API_URL, {
@@ -47,10 +63,157 @@ export function signUp (login, password) {
     })
     .then(response => response.json())
     .then(jsonResponse => {
-        console.log(jsonResponse);
         return jsonResponse.data.signUp;
     })
     .catch(error => {
         throw error
+    })
+}
+
+export function taskLists (login, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: TASK_LISTS,
+            variables: {
+                username: login,
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(jsonResponse => {
+        return jsonResponse.data.taskLists;
+    })
+    .catch(error => {
+        throw error
+    })
+}
+
+export function createTaskLists(title, username, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: CREATE_TASK_LISTS,
+            variables: {
+                title: title,
+                username: username
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        return responseJson.data.createTaskLists;
+    })
+    .catch(err => {
+        throw err;
+    })
+}
+
+export function deleteTaskLists(id, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: DELETE_TASK_LISTS,
+            variables: {
+                id: id,
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data;
+    })
+    .catch(err => {
+        throw err;
+    });
+}
+
+export function tasks(id, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: TASKS,
+            variables: {
+                id: id,
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data;
+    })
+    .catch(err => {
+        throw err;
+    });
+}
+
+export function deleteTaskById(id, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: DELETE_TASK,
+            variables: {
+                id: id,
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data;
+    })
+    .catch(err => {
+        throw err;
+    })
+}
+
+export function createTask(content, idList, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: CREATE_TASK,
+            variables: {
+                content: content,
+                idList: idList
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data.createTasks;
+    })
+    .catch(err => {
+        throw err;
     })
 }

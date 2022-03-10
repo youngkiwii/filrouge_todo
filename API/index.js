@@ -18,7 +18,7 @@ const typeDefs = fs
 // Create Neo4j driver instance
 const driver = neo4j.driver(
   "bolt://localhost:7687",
-  neo4j.auth.basic("neo4j", "Hypopota2135*")
+  neo4j.auth.basic("neo4j", "rootroot")
 );
 
 const ogm = new OGM({ typeDefs, driver });
