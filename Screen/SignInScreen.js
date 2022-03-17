@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, ActivityIndicator } from 'react-native'
 import { CustomButton } from '../components/CustomButton';
 import { styles } from '../components/styles';
 import { TokenContext, UsernameContext } from '../Contexte/Context';
@@ -9,6 +9,7 @@ export default function SignInScreen ({props, navigation}) {
     const [password, setPassword] = useState(null);
     const [login, setLogin] = useState(null);
     const [feedback, setFeedback] = useState(null);
+    const [loading, setLoading] = useState(false);
     
     return (
         <TokenContext.Consumer>
@@ -34,16 +35,25 @@ export default function SignInScreen ({props, navigation}) {
                             onChangeText={setPassword}
                         />
                         <CustomButton onPress={() => {
+                            setLoading(true);
                             signIn(login, password)
                             .then(token => {
                                 setToken(token)
                                 setUsername(login)
                                 props.navigate('Home')
+                                setLoading(false);
                             })
                             .catch(err => {
                                 setFeedback("Nom d'utilisateur ou mot de passe invalide.")
+                                setLoading(false);
                             })
                         }} style={{marginTop: 10}} text='Connexion'/>
+                        {
+                            loading ?
+                            <ActivityIndicator color="midnightblue" size='large'/>
+                            :
+                            <></>
+                        }
                     </View>
                 }
                 </UsernameContext.Consumer>

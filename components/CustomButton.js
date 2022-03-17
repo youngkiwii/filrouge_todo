@@ -6,7 +6,7 @@ export function CustomButton (props) {
 
     return (
         <Pressable style={[styles.button, props.style]} onPress={props.onPress}>
-            <Text>{props.text}</Text>
+            <Text style={{color: 'white'}}>{props.text}</Text>
         </Pressable>
     );
 }

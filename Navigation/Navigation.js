@@ -4,6 +4,8 @@ import { TokenContext } from '../Contexte/Context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import HomeScreen from '../Screen/HomeScreen';
 import SignInScreen from '../Screen/SignInScreen';
 import SignUpScreen from '../Screen/SignUpScreen';
@@ -39,29 +41,65 @@ export default function Navigation () {
             {([token, setToken]) => (
                 <NavigationContainer>
                     {token == null ? (
-                        <Tab.Navigator>
+                        <Tab.Navigator
+                            sceneContainerStyle={{
+                                backgroundColor: 'whitesmoke'
+                            }}
+                            screenOptions={{
+                                tabBarStyle: {
+                                  backgroundColor: 'midnightblue',
+                                },
+                              }}
+                        >
                             <Tab.Screen 
                                 name='SignIn'
                                 component={SignInScreen}
+                                options={{
+                                    tabBarLabel: '',
+                                }}
                             />
                             <Tab.Screen 
                                 name='SignUp'
                                 component={SignUpScreen}
+                                options={{
+                                    tabBarLabel: ''
+                                }}
                             />
                         </Tab.Navigator>
                     ) : (
-                        <Tab.Navigator>
+                        <Tab.Navigator
+                            sceneContainerStyle={{
+                                backgroundColor: 'whitesmoke'
+                            }}
+                            screenOptions={{
+                                tabBarStyle: {
+                                  backgroundColor: 'midnightblue',
+                                },
+                              }}
+                        >
                             <Tab.Screen 
                                 name='Home'
                                 component={HomeScreen}
+                                options={{
+                                    tabBarLabel: '',
+                                    tabBarIcon: () => <Icon name="home" size={30} color="white" />
+                                }}
                             />
                             <Tab.Screen 
                                 name='TodoLists'
                                 component={Todos}
+                                options={{
+                                    tabBarLabel: '',
+                                    tabBarIcon: () => <Icon name="list" size={30} color="white" />
+                                }}
                             />
                             <Tab.Screen 
                                 name='SignOut'
                                 component={SignOutScreen}
+                                options={{
+                                    tabBarLabel: '',
+                                    tabBarIcon: () => <Icon name="sign-out-alt" size={30} color="white" />
+                                }}
                             />
                         </Tab.Navigator>
                     )}

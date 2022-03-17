@@ -8,7 +8,7 @@ export default function TodoCard (props) {
 
     return (
         <View style={[style.card, props.style]}>
-            <Text style={{width: "85%"}} onPress={props.onPress}>{props.text}</Text>
+            <Text style={{width: "85%", fontWeight: 'bold'}} onPress={props.onPress}>{props.text}</Text>
             <TouchableOpacity onPress={() => {
                 deleteTaskLists(props.id, token)
                 .then(json => {
@@ -18,7 +18,7 @@ export default function TodoCard (props) {
                     console.log(err);
                 });
             }}>
-                <Image style={style.bin} source={require("../assets/supprimer.png")}/>
+                <Image style={style.bin} source={require("../assets/remove.png")}/>
             </TouchableOpacity>
         </View>
     );
@@ -31,7 +31,8 @@ const style = StyleSheet.create({
         borderWidth: 1,
         position: 'relative',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'snow'
     },
     bin: {
         height: 30,
