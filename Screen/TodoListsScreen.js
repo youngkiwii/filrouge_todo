@@ -4,8 +4,8 @@ import { styles } from '../components/styles'
 import { TokenContext, UsernameContext } from '../Contexte/Context'
 import { taskLists } from '../API/todoAPI'
 import Input from '../components/UI/Input'
-import { createTaskLists } from '../API/todoAPI'
-import TodoCard from '../components/TodoCard'
+import { createTaskLists, deleteTaskLists } from '../API/todoAPI'
+import Card from '../components/Card'
 import {ContainerPurple, ContainerWhite} from '../components/Container'
 
 export default function TodoListsScreen (props, { navigation }) {
@@ -24,6 +24,16 @@ export default function TodoListsScreen (props, { navigation }) {
             console.log(err);
         })
         setText(null);
+    };
+
+    const deleteTaskListsFct = (id) => {
+        deleteTaskLists(id, token)
+        .then(json => {
+            setData(data.filter(item => (item.id != id)));
+        })
+        .catch(err => {
+            console.log(err);
+        });
     };
 
     useEffect(() => {
@@ -52,13 +62,11 @@ export default function TodoListsScreen (props, { navigation }) {
                                     data={data}
                                     keyExtractor={(item) => item.id}
                                     renderItem={({item}) => 
-                                        <TodoCard 
-                                            id={item.id} 
-                                            data={data} 
+                                        <Card  
                                             onPress={() => {
                                                 props.navigation.navigate("Todos", {id: item.id, todolist: item.title});
-                                            }} 
-                                            setData={setData} 
+                                            }}
+                                            delete={() => {deleteTaskListsFct(item.id)}}
                                             style={{marginTop: 10}} 
                                             text={item.title}
                                         />

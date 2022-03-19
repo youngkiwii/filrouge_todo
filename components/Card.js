@@ -10,15 +10,7 @@ export default function TodoCard (props) {
     return (
         <View style={[style.card, props.style]}>
             <Text style={{width: "90%", fontWeight: 'bold', color: '#ddd'}} onPress={props.onPress}>{props.text}</Text>
-            <TouchableOpacity onPress={() => {
-                deleteTaskLists(props.id, token)
-                .then(json => {
-                    props.setData(props.data.filter(item => (item.id != props.id)));
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            }}>
+            <TouchableOpacity onPress={props.delete}>
                 <Icon color="#ddd" size={20} name="times"/>
             </TouchableOpacity>
         </View>

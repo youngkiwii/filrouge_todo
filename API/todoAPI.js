@@ -28,6 +28,8 @@ const UPDATE_TASK = `mutation($done: Boolean!, $id: ID!) {
     {tasks {id content done belongsTo {id title}}}
   }`
 
+const GET_USERS = `query { users (where: {roles_NOT_INCLUDES: "admin"}){id username roles}}`
+
 export function signIn (username, password) {
     return fetch(API_URL, {
         method: 'POST',
@@ -249,4 +251,27 @@ export function updateTask(id, done, token) {
     .catch(err => {
         throw err;
     })
+}
+
+export function getUsers(token) {
+    return fetch ( API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: GET_USERS
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        console.log(json);
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data.users;
+    })
+    .catch(err => {
+        throw err;
+    });
 }

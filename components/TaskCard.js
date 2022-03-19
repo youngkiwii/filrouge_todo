@@ -19,6 +19,7 @@ export default function TaskCard (props) {
             <BouncyCheckbox
                 text={props.item.content}
                 fillColor="#eee"
+                unfillColor="#5450d6"
                 style={{width: "80%"}}
                 textStyle={{ fontWeight: 'bold', color: '#eee'}}
                 isChecked={done}
