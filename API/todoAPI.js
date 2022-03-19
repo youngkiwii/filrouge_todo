@@ -1,4 +1,5 @@
 import { Token } from "graphql";
+import { json } from "neo4j-driver-core";
 import { TokenContext } from "../Contexte/Context";
 
 const API_URL = 'http://localhost:4000'
@@ -29,6 +30,8 @@ const UPDATE_TASK = `mutation($done: Boolean!, $id: ID!) {
   }`
 
 const GET_USERS = `query { users (where: {roles_NOT_INCLUDES: "admin"}){id username roles}}`
+
+const DELETE_USER = `mutation ($id: ID!){ deleteUsers (where: {id: $id}) {nodesDeleted relationshipsDeleted}}`
 
 export function signIn (username, password) {
     return fetch(API_URL, {
@@ -71,6 +74,8 @@ export function signUp (login, password) {
     })
     .then(response => response.json())
     .then(jsonResponse => {
+        if(jsonResponse.errors != null)
+            throw jsonResponse.errors[0];
         return jsonResponse.data.signUp;
     })
     .catch(error => {
@@ -94,6 +99,8 @@ export function taskLists (login, token) {
     })
     .then(response => response.json())
     .then(jsonResponse => {
+        if(jsonResponse.errors != null)
+            throw jsonResponse.errors[0];
         return jsonResponse.data.taskLists;
     })
     .catch(error => {
@@ -118,6 +125,8 @@ export function createTaskLists(title, username, token) {
     })
     .then(response => response.json())
     .then(responseJson => {
+        if(responseJson.errors != null)
+            throw responseJson.errors[0];
         return responseJson.data.createTaskLists;
     })
     .catch(err => {
@@ -266,10 +275,34 @@ export function getUsers(token) {
     })
     .then(response => response.json())
     .then(json => {
-        console.log(json);
         if(json.errors != null)
             throw json.errors[0];
         return json.data.users;
+    })
+    .catch(err => {
+        throw err;
+    });
+}
+
+export function deleteUser(id, token) {
+    return fetch (API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: DELETE_USER,
+            variables: {
+                id: id
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data.deleteUsers;
     })
     .catch(err => {
         throw err;

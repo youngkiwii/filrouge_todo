@@ -13,8 +13,10 @@ import SignUpScreen from '../Screen/SignUpScreen';
 import TodoListsScreen from '../Screen/TodoListsScreen';
 import TodosScreen from '../Screen/TodosScreen';
 import SettingsScreen from '../Screen/SettingsScreen';
-import { Buffer} from 'buffer';
 import AdminScreen from '../Screen/AdminScreen';
+import AdminTodoListsScreen from '../Screen/AdminTodoListsScreen';
+import { Buffer} from 'buffer';
+
 
 
 export default function Navigation () {
@@ -69,6 +71,17 @@ export default function Navigation () {
             <Stack.Screen
                 name='Admin'
                 component={AdminScreen}
+                options={{
+                    headerTitle: "",
+                    headerLeft: (props) => 
+                        <TouchableOpacity {...props} style={{marginLeft: 15, padding: 10, borderRadius: 10, borderWidth: 1, borderColor: 'gray'}}>
+                            <Icon size={14} name={'arrow-left'}/>
+                        </TouchableOpacity>,
+                }}
+            />
+            <Stack.Screen 
+                name="AdminTodoLists"
+                component={AdminTodoListsScreen}
                 options={{
                     headerTitle: "",
                     headerLeft: (props) => 
