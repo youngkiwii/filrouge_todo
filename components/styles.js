@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     body: {
-        alignItems: 'center',
+        alignItems: 'center'
     },
     title: {
         marginTop: 40,
@@ -10,10 +10,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     button: {
-        backgroundColor: 'darkslateblue',
+        backgroundColor: 'midnightblue',
         paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 10,
+    },
+    btnOutline: {
+        backgroundColor: 'white',
+        borderWidth: 2,
+        borderColor: 'midnightblue',
+        padding: 10,
+        borderRadius: 10
     },
     input: {
         width: "75%",

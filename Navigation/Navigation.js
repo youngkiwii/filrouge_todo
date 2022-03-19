@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavigationContainer, TabActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { TokenContext } from '../Contexte/Context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,22 +19,24 @@ export default function Navigation () {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
 
-    const Todos = () => <Stack.Navigator>
-        <Stack.Screen
-            name="TodoListsStack"
-            component={TodoListsScreen}
-            options={{
-                header: () => null
-            }}
-        />
-        <Stack.Screen
-            name="Todos"
-            component={TodosScreen}
-            options={{
-                
-            }}
-        />
-    </Stack.Navigator>
+    const Todos = () => 
+        <Stack.Navigator>
+            <Stack.Screen
+                name="TodoListsStack"
+                component={TodoListsScreen}
+                options={{
+                    header: () => null
+                }}
+            />
+            <Stack.Screen
+                name="Todos"
+                component={TodosScreen}
+                options={{
+                    headerTitle: "",
+                    headerBackTitle: "Retour"
+                }}
+            />
+        </Stack.Navigator>
 
     return (
         <TokenContext.Consumer>
@@ -56,13 +58,15 @@ export default function Navigation () {
                                 component={SignInScreen}
                                 options={{
                                     tabBarLabel: '',
+                                    tabBarIcon: (tabInfo) => <Icon name="sign-in" size={30} color={tabInfo.focused ? "white" : "gray"} />
                                 }}
                             />
                             <Tab.Screen 
                                 name='SignUp'
                                 component={SignUpScreen}
                                 options={{
-                                    tabBarLabel: ''
+                                    tabBarLabel: '',
+                                    tabBarIcon: (tabInfo) => <Icon name="user-plus" size={30} color={tabInfo.focused ? "white" : "gray"} />
                                 }}
                             />
                         </Tab.Navigator>
@@ -82,7 +86,8 @@ export default function Navigation () {
                                 component={HomeScreen}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: () => <Icon name="home" size={30} color="white" />
+                                    tabBarIcon: (tabInfo) => <Icon name="home" size={30} color={tabInfo.focused ? "white" : "gray"} />,
+                                    headerTitle: ""
                                 }}
                             />
                             <Tab.Screen 
@@ -90,7 +95,8 @@ export default function Navigation () {
                                 component={Todos}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: () => <Icon name="list" size={30} color="white" />
+                                    tabBarIcon: (tabInfo) => <Icon name="list" size={30} color={tabInfo.focused ? "white" : "gray"} />,
+                                    headerTitle: ""
                                 }}
                             />
                             <Tab.Screen 
@@ -98,7 +104,8 @@ export default function Navigation () {
                                 component={SignOutScreen}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: () => <Icon name="sign-out-alt" size={30} color="white" />
+                                    tabBarIcon: (tabInfo) => <Icon name="sign-out" size={30} color={tabInfo.focused ? "white" : "gray"} />,
+                                    headerTitle: ""
                                 }}
                             />
                         </Tab.Navigator>

@@ -10,6 +10,21 @@ export default function SignInScreen ({props, navigation}) {
     const [login, setLogin] = useState(null);
     const [feedback, setFeedback] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const doLogin = (setToken, setUsername) => {
+        setLoading(true);
+        signIn(login, password)
+        .then(token => {
+            setToken(token)
+            setUsername(login)
+            props.navigate('Home')
+            setLoading(false);
+        })
+        .catch(err => {
+            setFeedback("Nom d'utilisateur ou mot de passe invalide.")
+            setLoading(false);
+        })
+    };
     
     return (
         <TokenContext.Consumer>
@@ -33,21 +48,9 @@ export default function SignInScreen ({props, navigation}) {
                             secureTextEntry={true}
                             value={password}
                             onChangeText={setPassword}
+                            onSubmitEditing={() => {doLogin(setToken, setUsername)}}
                         />
-                        <CustomButton onPress={() => {
-                            setLoading(true);
-                            signIn(login, password)
-                            .then(token => {
-                                setToken(token)
-                                setUsername(login)
-                                props.navigate('Home')
-                                setLoading(false);
-                            })
-                            .catch(err => {
-                                setFeedback("Nom d'utilisateur ou mot de passe invalide.")
-                                setLoading(false);
-                            })
-                        }} style={{marginTop: 10}} text='Connexion'/>
+                        <CustomButton onPress={() => { doLogin(setToken, setUsername)}} style={{marginTop: 10}} text='Connexion'/>
                         {
                             loading ?
                             <ActivityIndicator color="midnightblue" size='large'/>

@@ -19,30 +19,24 @@ export default function TaskCard (props) {
             <BouncyCheckbox
                 text={props.item.content}
                 fillColor="indigo"
-                style={{width: "90%"}}
-                textStyle={{ fontWeight: 'bold', color: 'indigo'}}
+                style={{width: "80%"}}
+                textStyle={{ fontWeight: 'bold', color: 'midnightblue'}}
+                isChecked={done}
+                disableBuiltInState
                 onPress={(state) => {
                     props.item.done = state;
                     setDone(state);
                     done ? props.changeCount(-1) : props.changeCount(1);
                 }}
             />
-            <Menu>
+            <Menu style={{marginLeft: 20}}>
                 <MenuTrigger>
                     <Icon name="ellipsis-v" style={{width: 20, textAlign: 'center'}} size={30} color="black" />
                 </MenuTrigger>
                  <MenuOptions optionsContainerStyle={{width: 100}}>
                         <MenuOption onSelect={() => alert(`Voir`)} text='Consulter' />
                         <MenuOption onSelect={() => alert(`Save`)} text='Modifier' />
-                        <MenuOption onSelect={() => {
-                            deleteTaskById(props.item.id, token)
-                            .then(json => {
-                                props.setData(props.data.filter(item => (item.id != props.item.id)));
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            });
-                        }} >
+                        <MenuOption onSelect={props.deleteTask} >
                             <Text style={{color: 'red'}}>Supprimer</Text>
                         </MenuOption>
                 </MenuOptions>
@@ -55,8 +49,6 @@ const style = StyleSheet.create({
     card: {
         borderRadius: 10,
         padding: 15,
-        borderWidth: 1,
-        borderColor: "rgba(0,0,0,0.5)",
         position: 'relative',
         flexDirection: 'row',
         alignItems: 'center',

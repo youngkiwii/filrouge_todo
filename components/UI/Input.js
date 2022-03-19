@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 
 export default function Input (props) {
+    
     return (
         <View style={[style.container, props.style]}>
             <TextInput
