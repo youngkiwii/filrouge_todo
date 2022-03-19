@@ -5,9 +5,10 @@ import { TokenContext, UsernameContext } from '../Contexte/Context'
 import Input from '../components/UI/Input'
 import TaskCard from '../components/TaskCard'
 
-import { createTask, deleteTaskById, tasks } from '../API/todoAPI'
+import { createTask, deleteTaskById, tasks, updateTask } from '../API/todoAPI'
 import { CustomButton } from '../components/CustomButton'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { ContainerWhite } from '../components/Container'
 
 const ALL_TASKS = "all_tasks";
 const FINISHED_TASKS = "finished_tasks";
@@ -21,9 +22,10 @@ export default function TodosScreen ({ route, navigation }) {
     const [text, setText] = useState("");
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0);
+    const [feedback, setFeedback] = useState(null);
 
     // DropDown Picker
-    DropDownPicker.setTheme("DARK");
+    DropDownPicker.setTheme("LIGHT");
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -54,31 +56,53 @@ export default function TodosScreen ({ route, navigation }) {
     }
 
     const doCreateTask = () => {
-        setLoading(true);
-        createTask(text, route.params.id, token)
-        .then(response => {
-            const result = [...data, ...response.tasks];
-            setData(result);
-            setOriginal(result);
-            setLoading(false);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        setText("");
+        if(text !== ""){
+            setLoading(true);
+            createTask(text, route.params.id, token)
+            .then(response => {
+                const result = [...data, ...response.tasks];
+                setData(result);
+                setOriginal(result);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            setText("");
+        }else
+            setFeedback("Veuillez saisir un nom");
     };
 
     const checkTasks = (boolean) => {
         const all = original.map(item => {
             return {id: item.id, content: item.content, done: boolean, belongsTo: item.belongsTo};
         });
+        original.forEach((item) => {
+            updateTask(item.id, boolean, token)
+            .then(data => {})
+            .catch(err => {
+                console.log(err);
+            });
+        })
         setOriginal(all);
         setData(all);
     }
 
+    const deleteTask = (item) => {
+        deleteTaskById(item.id, token)
+        .then(json => {
+            const newResult = original.filter(value => (value.id != item.id));
+            setOriginal(newResult);
+            setData(newResult);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    };
+
     useEffect(() => {
         if (original.length === 0) {
-            tasks(route.params.id, token)
+            tasks(username, route.params.id, token)
             .then(taskLists => {
                 const result = taskLists.tasks.filter(item => item.belongsTo != null);
                 setData(result);
@@ -94,17 +118,20 @@ export default function TodosScreen ({ route, navigation }) {
             {([token, setToken]) => (
                 <UsernameContext.Consumer>
                     {([username, setUsername]) => 
-                        <View style={styles.body}>
-                            <Input
-                                style={{marginTop: 20}}
-                                onPress={doCreateTask}
-                                text={text}
-                                onChangeText={setText}
-                                data={data}
-                                placeholder="Nouvelle Tâche"
-                            />
-                            <Text style={styles.title}>Liste des tâches</Text>
-                            <Text style={styles.subtitle}>{route.params.todolist}</Text>
+                        <ContainerWhite>
+                            {
+                                feedback ?
+                                <Text style={{ position: 'absolute', marginTop: 10, color: 'red'}}>{feedback}</Text>
+                                :
+                                <></>
+                            }
+                            <View style={{ width: "70%"}}>
+                                <Text style={styles.title}>Mes tâches</Text>
+                                <View style={{ marginTop: 5,flexDirection: 'row', flexWrap: 'wrap'}}>
+                                    <Text style={styles.subtitle}>{ count  + ' ' + (count > 1 ? 'tâches réalisées' : 'tâche réalisée')} pour </Text>
+                                    <Text style={{textDecorationLine: 'underline'}}>{route.params.todolist}</Text>
+                                </View>
+                            </View>
                             <View style={{zIndex: 2000}}>
                                 <DropDownPicker
                                     placeholder="Trier par ..."
@@ -129,32 +156,32 @@ export default function TodosScreen ({ route, navigation }) {
                                 <CustomButton onPress={() => { checkTasks(true) }} text="Tout cocher" outline/>
                                 <CustomButton onPress={() => { checkTasks(false) }} style={{marginLeft: 10}} text="Tout décocher" outline/>
                             </View>
-                            <Text style={[styles.subtitle, {marginTop: 10}]}>Nombre de tâches réalisées : {count}</Text>
-                            <FlatList 
-                                style={{width: "70%"}}
-                                data={data}
-                                keyExtractor={(item) => item.id}
-                                renderItem={({item}) => <TaskCard item={item} changeCount={changeCount} deleteTask={
-                                    () => {
-                                        deleteTaskById(item.id, token)
-                                        .then(json => {
-                                            const newResult = original.filter(value => (value.id != item.id));
-                                            setOriginal(newResult);
-                                            setData(newResult);
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                        });
+                            {
+                                loading ? 
+                                <ActivityIndicator color="#999999" size="large"/>
+                                :
+                                <FlatList 
+                                    style={{marginTop: 20, width: "70%", maxHeight: 400}}
+                                    data={data}
+                                    keyExtractor={(item) => item.id}
+                                    renderItem={({item}) => 
+                                        <TaskCard item={item}
+                                            changeCount={changeCount} 
+                                            deleteTask={() => {deleteTask(item)}} 
+                                            style={{marginTop: 10}}
+                                        />
                                     }
-                                } style={{marginTop: 10}}/>}
                                 />
-                                {
-                                    loading ? 
-                                    <ActivityIndicator color="#999999" size="large"/>
-                                    :
-                                    <></>
-                                }
-                        </View>
+                            }
+                            <Input
+                                style={{ backgroundColor: "#5450d6", bottom: 100, position: 'absolute', marginTop: 20}}
+                                onPress={doCreateTask}
+                                text={text}
+                                purple
+                                onChangeText={setText}
+                                placeholder="Nouvelle Tâche"
+                            />
+                        </ContainerWhite>
                     }
                 </UsernameContext.Consumer>
             )}

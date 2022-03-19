@@ -2,12 +2,14 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     body: {
-        alignItems: 'center'
+        alignItems: 'center',
+        flex: 1
     },
     title: {
         marginTop: 40,
         fontSize: 24,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#2e3357'
     },
     button: {
         backgroundColor: 'midnightblue',
@@ -24,10 +26,9 @@ const styles = StyleSheet.create({
     },
     input: {
         width: "75%",
-        borderWidth: 1,
-        borderColor: '#333',
-        padding: 10,
+        padding: 15,
         borderRadius: 10,
+        backgroundColor: "#d1dbed",
         marginTop: 10
     }
 });

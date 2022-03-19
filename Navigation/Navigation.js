@@ -1,4 +1,5 @@
 import React from 'react'
+import { View, TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { TokenContext } from '../Contexte/Context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -19,13 +20,16 @@ export default function Navigation () {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
 
-    const Todos = () => 
-        <Stack.Navigator>
+    const TodosNavigator = () => 
+        <Stack.Navigator 
+            screenOptions={{
+                headerTransparent: true,
+            }}>
             <Stack.Screen
                 name="TodoListsStack"
                 component={TodoListsScreen}
                 options={{
-                    header: () => null
+                    header: () => null,
                 }}
             />
             <Stack.Screen
@@ -33,7 +37,11 @@ export default function Navigation () {
                 component={TodosScreen}
                 options={{
                     headerTitle: "",
-                    headerBackTitle: "Retour"
+                    headerBackTitle: "Retour",
+                    headerLeft: (props) => 
+                        <TouchableOpacity {...props} style={{marginLeft: 15, padding: 10, borderRadius: 10, borderWidth: 1, borderColor: 'gray'}}>
+                            <Icon size={14} name={'arrow-left'}/>
+                        </TouchableOpacity>,
                 }}
             />
         </Stack.Navigator>
@@ -44,12 +52,12 @@ export default function Navigation () {
                 <NavigationContainer>
                     {token == null ? (
                         <Tab.Navigator
-                            sceneContainerStyle={{
-                                backgroundColor: 'whitesmoke'
-                            }}
                             screenOptions={{
+                                headerShown: false,
                                 tabBarStyle: {
-                                  backgroundColor: 'midnightblue',
+                                    backgroundColor: 'transparent',
+                                    borderTopWidth: 0,
+                                    position: 'absolute'
                                 },
                               }}
                         >
@@ -58,7 +66,7 @@ export default function Navigation () {
                                 component={SignInScreen}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: (tabInfo) => <Icon name="sign-in" size={30} color={tabInfo.focused ? "white" : "gray"} />
+                                    tabBarIcon: (tabInfo) => <Icon name="sign-in" size={30} color={tabInfo.focused ? "dodgerblue" : "gray"} />
                                 }}
                             />
                             <Tab.Screen 
@@ -66,18 +74,18 @@ export default function Navigation () {
                                 component={SignUpScreen}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: (tabInfo) => <Icon name="user-plus" size={30} color={tabInfo.focused ? "white" : "gray"} />
+                                    tabBarIcon: (tabInfo) => <Icon name="user-plus" size={30} color={tabInfo.focused ? "dodgerblue" : "gray"} />
                                 }}
                             />
                         </Tab.Navigator>
                     ) : (
                         <Tab.Navigator
-                            sceneContainerStyle={{
-                                backgroundColor: 'whitesmoke'
-                            }}
                             screenOptions={{
+                                headerShown: false,
                                 tabBarStyle: {
-                                  backgroundColor: 'midnightblue',
+                                    backgroundColor: 'transparent',
+                                    borderTopWidth: 0,
+                                    position: 'absolute'
                                 },
                               }}
                         >
@@ -86,16 +94,16 @@ export default function Navigation () {
                                 component={HomeScreen}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: (tabInfo) => <Icon name="home" size={30} color={tabInfo.focused ? "white" : "gray"} />,
+                                    tabBarIcon: (tabInfo) => <Icon name="home" size={30} color={tabInfo.focused ? "dodgerblue" : "gray"} />,
                                     headerTitle: ""
                                 }}
                             />
                             <Tab.Screen 
                                 name='TodoLists'
-                                component={Todos}
+                                component={TodosNavigator}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: (tabInfo) => <Icon name="list" size={30} color={tabInfo.focused ? "white" : "gray"} />,
+                                    tabBarIcon: (tabInfo) => <Icon name="list" size={30} color={tabInfo.focused ? "dodgerblue" : "gray"} />,
                                     headerTitle: ""
                                 }}
                             />
@@ -104,7 +112,7 @@ export default function Navigation () {
                                 component={SignOutScreen}
                                 options={{
                                     tabBarLabel: '',
-                                    tabBarIcon: (tabInfo) => <Icon name="sign-out" size={30} color={tabInfo.focused ? "white" : "gray"} />,
+                                    tabBarIcon: (tabInfo) => <Icon name="sign-out" size={30} color={tabInfo.focused ? "dodgerblue" : "gray"} />,
                                     headerTitle: ""
                                 }}
                             />

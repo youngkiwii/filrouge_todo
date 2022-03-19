@@ -8,12 +8,12 @@ export default function App() {
   const [username, setUsername] = useState(null);
 
   return (
-    <MenuProvider>
-      <UsernameContext.Provider value={[username, setUsername]}>
-        <TokenContext.Provider value={[token, setToken]}>
-          <Navigation/>
-        </TokenContext.Provider>
-      </UsernameContext.Provider>
-    </MenuProvider>
+      <MenuProvider>
+        <UsernameContext.Provider value={[username, setUsername]}>
+          <TokenContext.Provider value={[token, setToken]}>
+            <Navigation/>
+          </TokenContext.Provider>
+        </UsernameContext.Provider>
+      </MenuProvider>
   );
 }

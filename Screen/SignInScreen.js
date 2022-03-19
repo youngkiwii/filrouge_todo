@@ -4,6 +4,7 @@ import { CustomButton } from '../components/CustomButton';
 import { styles } from '../components/styles';
 import { TokenContext, UsernameContext } from '../Contexte/Context';
 import { signIn } from '../API/todoAPI';
+import { ContainerWhite } from '../components/Container';
 
 export default function SignInScreen ({props, navigation}) {
     const [password, setPassword] = useState(null);
@@ -31,7 +32,7 @@ export default function SignInScreen ({props, navigation}) {
             {([token, setToken]) => (
                 <UsernameContext.Consumer>
                 {([username, setUsername]) => 
-                    <View style={styles.body}>
+                    <ContainerWhite>
                         <Text style={styles.title}>Connexion</Text>
                         {
                             feedback !== null ? <Text style={{marginTop: 5,color: 'red'}}>{feedback}</Text> : <></>
@@ -57,7 +58,7 @@ export default function SignInScreen ({props, navigation}) {
                             :
                             <></>
                         }
-                    </View>
+                    </ContainerWhite>
                 }
                 </UsernameContext.Consumer>
             )}

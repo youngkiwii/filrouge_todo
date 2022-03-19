@@ -16,11 +16,17 @@ const CREATE_TASK_LISTS = 'mutation($title: String!, $username: String!) {create
 
 const DELETE_TASK_LISTS = 'mutation($id: ID!) {deleteTaskLists(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
 
-const TASKS = 'query($id: ID!) {tasks {id content done belongsTo (where: {id: $id}) {id title}}}';
+const TASKS = 'query($username: String!, $id: ID!){tasks (where: {belongsTo: {owner: {username: $username}}}) {id content done belongsTo (where: {id: $id}) {id title}}}';
 
 const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, done: false, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
 
 const DELETE_TASK = 'mutation($id: ID!) {deleteTasks(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
+
+const UPDATE_TASK = `mutation($done: Boolean!, $id: ID!) {
+    updateTasks(where: { id: $id }
+        update: {done: $done})
+    {tasks {id content done belongsTo {id title}}}
+  }`
 
 export function signIn (username, password) {
     return fetch(API_URL, {
@@ -142,7 +148,7 @@ export function deleteTaskLists(id, token) {
     });
 }
 
-export function tasks(id, token) {
+export function tasks(username, id, token) {
     return fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -152,6 +158,7 @@ export function tasks(id, token) {
         body: JSON.stringify({
             query: TASKS,
             variables: {
+                username: username,
                 id: id,
             }
         })
@@ -212,6 +219,32 @@ export function createTask(content, idList, token) {
         if(json.errors != null)
             throw json.errors[0];
         return json.data.createTasks;
+    })
+    .catch(err => {
+        throw err;
+    })
+}
+
+export function updateTask(id, done, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: UPDATE_TASK,
+            variables: {
+                done: done,
+                id: id,
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data.updateTasks;
     })
     .catch(err => {
         throw err;

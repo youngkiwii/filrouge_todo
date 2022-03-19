@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { View, TextInput, Text } from 'react-native'
 import { signUp } from '../API/todoAPI';
+import { ContainerWhite } from '../components/Container';
 import { CustomButton } from '../components/CustomButton';
 import { styles } from '../components/styles';
 import { TokenContext, UsernameContext } from '../Contexte/Context';
@@ -32,7 +33,7 @@ export default function SignUpScreen ({props,navigation }) {
             {([token, setToken]) => (
                 <UsernameContext.Consumer>
                     {([username, setUsername]) => 
-                        <View style={styles.body}>
+                        <ContainerWhite>
                             <Text style={styles.title}>Inscription</Text>
                             {
                                 feedback !== null ? <Text style={{marginTop: 5,color: 'red'}}>{feedback}</Text> : <></>
@@ -64,7 +65,7 @@ export default function SignUpScreen ({props,navigation }) {
                                 style={{marginTop: 10}} 
                                 text="S'inscrire"
                             />
-                        </View>
+                        </ContainerWhite>
                     }
                 </UsernameContext.Consumer>
             )}
