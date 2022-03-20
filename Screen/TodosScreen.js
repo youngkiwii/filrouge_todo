@@ -99,12 +99,11 @@ export default function TodosScreen ({ route, navigation }) {
             console.log(err);
         });
     };
-
     useEffect(() => {
         if (original.length === 0) {
             tasks(username, route.params.id, token)
             .then(taskLists => {
-                const result = taskLists.tasks.filter(item => item.belongsTo != null);
+                const result = taskLists.filter(item => item.belongsTo != null);
                 setData(result);
                 setOriginal(result);
                 setLoading(false);

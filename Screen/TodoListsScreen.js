@@ -5,8 +5,8 @@ import { TokenContext, UsernameContext } from '../Contexte/Context'
 import { taskLists } from '../API/todoAPI'
 import Input from '../components/UI/Input'
 import { createTaskLists, deleteTaskLists } from '../API/todoAPI'
-import Card from '../components/Card'
 import {ContainerPurple, ContainerWhite} from '../components/Container'
+import TodoListCard from '../components/TodoListCard'
 
 export default function TodoListsScreen (props, { navigation }) {
     const [username, setUsername] = useContext(UsernameContext);
@@ -37,6 +37,12 @@ export default function TodoListsScreen (props, { navigation }) {
     };
 
     useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            setData(data);
+        });
+    }, [props.navigation])
+
+    useEffect(() => {
         if (data.length == 0) {
             taskLists(username, token)
             .then(taskLists => {
@@ -62,7 +68,9 @@ export default function TodoListsScreen (props, { navigation }) {
                                     data={data}
                                     keyExtractor={(item) => item.id}
                                     renderItem={({item}) => 
-                                        <Card  
+                                        <TodoListCard  
+                                            item={item}
+                                            username={username}
                                             onPress={() => {
                                                 props.navigation.navigate("Todos", {id: item.id, todolist: item.title});
                                             }}

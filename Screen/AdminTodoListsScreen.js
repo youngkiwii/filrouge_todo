@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Text, FlatList, ActivityIndicator} from 'react-native';
-import Card from '../components/Card';
 import { styles } from '../components/styles';
 import { ContainerPurple } from '../components/Container';
 import { deleteTaskLists, taskLists } from '../API/todoAPI';
 import { TokenContext } from '../Contexte/Context';
+import TodoListCard from '../components/TodoListCard';
 
 export default function AdminTodoListsScreen ({route}) {
     const [token, setToken] = useContext(TokenContext);
@@ -47,7 +47,9 @@ export default function AdminTodoListsScreen ({route}) {
                     data={data}
                     keyExtractor={(item) => item.id}
                     renderItem={({item}) => 
-                        <Card 
+                        <TodoListCard 
+                            item={item}
+                            username={route.params.username}
                             delete={() => {deleteTaskListsFct(item.id)}}
                             style={{marginTop: 10}} 
                             text={item.title}

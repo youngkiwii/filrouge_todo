@@ -1,10 +1,9 @@
 import React, { useContext } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
-import { deleteTaskLists } from '../API/todoAPI';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { TokenContext } from '../Contexte/Context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function TodoCard (props) {
+export default function Card (props) {
     const [token, setToken] = useContext(TokenContext);
 
     return (

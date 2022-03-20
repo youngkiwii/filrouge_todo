@@ -17,7 +17,7 @@ const CREATE_TASK_LISTS = 'mutation($title: String!, $username: String!) {create
 
 const DELETE_TASK_LISTS = 'mutation($id: ID!) {deleteTaskLists(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
 
-const TASKS = 'query($username: String!, $id: ID!){tasks (where: {belongsTo: {owner: {username: $username}}}) {id content done belongsTo (where: {id: $id}) {id title}}}';
+const TASKS = 'query($username: String!, $id: ID!){tasks (where: {belongsTo: {id: $id, owner: {username: $username}}}) {id content done belongsTo {id title}}}';
 
 const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, done: false, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
 
@@ -178,7 +178,7 @@ export function tasks(username, id, token) {
     .then(json => {
         if(json.errors != null)
             throw json.errors[0];
-        return json.data;
+        return json.data.tasks;
     })
     .catch(err => {
         throw err;
