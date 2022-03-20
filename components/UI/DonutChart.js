@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react'
 import {View, StyleSheet, TextInput, Animated} from 'react-native'
 import Svg, {G, Circle} from 'react-native-svg';
-import { circle } from 'react-native/Libraries/Animated/Easing';
 
 const AnimatedInput = Animated.createAnimatedComponent(TextInput);
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -15,12 +14,12 @@ export default function DonutChart({
     delay = 0,
     textColor
 }) {
-    const circleRef = useRef();
-    const inputRef = useRef();
-
     const animatedValue = useRef(new Animated.Value(0)).current;
+    const circleRef = useRef(null);
+    const inputRef = useRef(null);
+    
     const halfCircle = radius + strokeWidth;
-    const circleCircumference = 2 * Math.PI * radius;
+    const circleCircumference = (2 * Math.PI * radius).toString();
     const animation = (toValue) => {
         return Animated.timing(animatedValue,{
             toValue,
@@ -37,7 +36,7 @@ export default function DonutChart({
                 const strokeDashoffset = circleCircumference - (circleCircumference * v.value) / 100;
                 circleRef.current.setNativeProps({
                     strokeDashoffset
-                });
+                })
             }
 
             if(inputRef?.current) {
@@ -59,11 +58,11 @@ export default function DonutChart({
                 height={radius * 2}
                 viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}
             >
-                <G rotation='-90' origin={`${halfCircle}, ${halfCircle}`}>
+                <G rotation='-90' originX={halfCircle} originY={halfCircle}>
                     <Circle
                         cx='50%'
                         cy='50%'
-                        stroke={color}
+                        stroke={'white'}
                         strokeWidth={strokeWidth}
                         r={radius}
                         fill='transparent'
@@ -78,7 +77,7 @@ export default function DonutChart({
                         r={radius}
                         fill='transparent'
                         strokeDasharray={circleCircumference}
-                        strokeDashoffset={circleCircumference / 2}
+                        strokeDashoffset={circleCircumference}
                         strokeLinecap='round'
                     />
                 </G>

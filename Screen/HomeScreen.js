@@ -15,6 +15,7 @@ export default function HomeScreen ({navigation}) {
                             <View style={styles.body}>
                                 <View style={{width: "70%"}}>
                                     <Text style={styles.title}>Bienvenue, {username} !</Text>
+                                    
                                 </View>
                             </View>
                         </ContainerWhite>
