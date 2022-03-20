@@ -7,7 +7,7 @@ import { TokenContext } from '../Contexte/Context';
 import TodoListCard from '../components/TodoListCard';
 
 // Accès aux todolists des différents utilisateurs
-export default function AdminTodoListsScreen ({route}) {
+export default function AdminTodoListsScreen ({route, navigation}) {
     const [token, setToken] = useContext(TokenContext);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -21,6 +21,16 @@ export default function AdminTodoListsScreen ({route}) {
             console.log(err);
         });
     }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setData(data);
+        });
+
+        return () => {
+            return unsubscribe;
+        };
+    }, [navigation])
 
     useEffect(() => {
         if(data.length === 0){
@@ -51,6 +61,8 @@ export default function AdminTodoListsScreen ({route}) {
                         <TodoListCard 
                             item={item}
                             username={route.params.username}
+                            data={data}
+                            onPress={() => {navigation.navigate("AdminTodos", {todolist: item.title, id: item.id, username: route.params.username})}}
                             delete={() => {deleteTaskListsFct(item.id)}}
                             style={{marginTop: 10}} 
                             text={item.title}

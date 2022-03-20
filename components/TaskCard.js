@@ -26,12 +26,14 @@ export default function TaskCard (props) {
                 isChecked={done}
                 disableBuiltInState
                 onPress={() => {
-                    updateTask(props.item.id, !done, token)
-                    .then(data => { })
-                    .catch(err => { console.log(err); })
-                    props.item.done = !done;
-                    setDone(!done);
-                    done ? props.changeCount(-1) : props.changeCount(1);
+                    if(!props.disabled) {
+                        updateTask(props.item.id, !done, token)
+                        .then(data => { })
+                        .catch(err => { console.log(err); })
+                        props.item.done = !done;
+                        setDone(!done);
+                        done ? props.changeCount(-1) : props.changeCount(1);
+                    }
                 }}
             />
             <Menu style={{marginLeft: 20}}>

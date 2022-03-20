@@ -18,7 +18,7 @@ const TASK_LISTS =
     'query($username: String!) {taskLists(where: { owner: { username: $username } }) { id title }}';
 
 // CREATE
-const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, done: false, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
+const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
 const CREATE_TASK_LISTS = 'mutation($title: String!, $username: String!) {createTaskLists(input: { title: $title owner: { connect: { where: { username: $username } } }}) {taskLists {id title owner { username } }}}'
 
 // DELTE

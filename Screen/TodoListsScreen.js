@@ -5,7 +5,7 @@ import { TokenContext, UsernameContext } from '../Contexte/Context'
 import { taskLists } from '../API/todoAPI'
 import Input from '../components/UI/Input'
 import { createTaskLists, deleteTaskLists } from '../API/todoAPI'
-import {ContainerPurple, ContainerWhite} from '../components/Container'
+import {ContainerPurple } from '../components/Container'
 import TodoListCard from '../components/TodoListCard'
 
 // Écran des TodoLists
@@ -46,6 +46,10 @@ export default function TodoListsScreen (props, { navigation }) {
         const unsubscribe = props.navigation.addListener('focus', () => {
             setData(data);
         });
+
+        return () => {
+            return unsubscribe;
+        };
     }, [props.navigation])
 
     // Chargement de todolists
@@ -87,6 +91,7 @@ export default function TodoListsScreen (props, { navigation }) {
                                         <TodoListCard  
                                             item={item}
                                             username={username}
+                                            data={data}
                                             onPress={() => {
                                                 props.navigation.navigate("Todos", {id: item.id, todolist: item.title});
                                             }}

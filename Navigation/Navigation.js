@@ -16,6 +16,7 @@ import SettingsScreen from '../Screen/SettingsScreen';
 import AdminScreen from '../Screen/AdminScreen';
 import AdminTodoListsScreen from '../Screen/AdminTodoListsScreen';
 import { Buffer} from 'buffer';
+import AdminTodosScreen from '../Screen/AdminTodosScreen';
 
 
 
@@ -82,6 +83,17 @@ export default function Navigation () {
             <Stack.Screen 
                 name="AdminTodoLists"
                 component={AdminTodoListsScreen}
+                options={{
+                    headerTitle: "",
+                    headerLeft: (props) => 
+                        <TouchableOpacity {...props} style={{marginLeft: 15, padding: 10, borderRadius: 10, borderWidth: 1, borderColor: 'snow'}}>
+                            <Icon size={14} color="white" name={'arrow-left'}/>
+                        </TouchableOpacity>,
+                }}
+            />
+            <Stack.Screen 
+                name="AdminTodos"
+                component={AdminTodosScreen}
                 options={{
                     headerTitle: "",
                     headerLeft: (props) => 

@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect} from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native'
 import { TokenContext } from '../Contexte/Context';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Svg, {G, Circle} from 'react-native-svg';
 import DonutChart from './UI/DonutChart';
 import { tasks } from '../API/todoAPI';
 
@@ -34,7 +33,7 @@ export default function TodoListCard (props) {
     );
 }
 
-// Style
+// styles
 const style = StyleSheet.create({
     card: {
         borderRadius: 25,
