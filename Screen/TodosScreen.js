@@ -57,6 +57,7 @@ export default function TodosScreen ({ route, navigation }) {
 
     // fonction permettant de créer une tâche
     const doCreateTask = () => {
+        setFeedback(null);
         if(text !== ""){
             setLoading(true);
             createTask(text, route.params.id, token)
@@ -67,7 +68,7 @@ export default function TodosScreen ({ route, navigation }) {
                 setLoading(false);
             })
             .catch(err => {
-                console.log(err);
+                setFeedback(err.message);
             })
             setText("");
         }else
@@ -83,7 +84,7 @@ export default function TodosScreen ({ route, navigation }) {
             updateTask(item.id, boolean, token)
             .then(data => {})
             .catch(err => {
-                console.log(err);
+                setFeedback(err.message);
             });
         })
         setOriginal(all);
@@ -99,7 +100,7 @@ export default function TodosScreen ({ route, navigation }) {
             setData(newResult);
         })
         .catch(err => {
-            console.log(err);
+            setFeedback(err.message);
         });
     };
 
@@ -112,6 +113,9 @@ export default function TodosScreen ({ route, navigation }) {
                 setData(result);
                 setOriginal(result);
                 setLoading(false);
+            })
+            .catch(err => {
+                setFeedback(err.message);
             })
         }
         setCount(original.filter(item => item.done).length);

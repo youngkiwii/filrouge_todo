@@ -13,6 +13,7 @@ export default function SignUpScreen ({props,navigation }) {
     const [feedback, setFeedback] = useState(null);
 
     const signUpFunc = (setToken, setUsername) => {
+        setFeedback(null);
         if(password === confirmPwd){
             signUp(login, password)
             .then(token => {
@@ -21,7 +22,7 @@ export default function SignUpScreen ({props,navigation }) {
                 props.navigate('Home');
             })
             .catch(err => {
-                setFeedback("Ce nom a déjà été choisi.")
+                setFeedback(err.message)
             });
         }else {
             setFeedback("Veuillez confirmer avec le même mot de passe.");

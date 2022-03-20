@@ -15,15 +15,17 @@ export default function TodoListsScreen (props, { navigation }) {
     const [data, setData] = useState([]);
     const [text, setText] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [feedback, setFeedback] = useState(null);
 
     //Création de TodoLists
     const createTaskListsFct = () => {
+        setFeedback(null);
         createTaskLists(text, username, token)
         .then(json => {
             setData([...data, {"id": json.taskLists[0].id, "title": json.taskLists[0].title}]);
         })
         .catch(err => {
-            console.log(err);
+            setFeedback(err.message);
         })
         setText(null);
     };
@@ -35,7 +37,7 @@ export default function TodoListsScreen (props, { navigation }) {
             setData(data.filter(item => (item.id != id)));
         })
         .catch(err => {
-            console.log(err);
+            setFeedback(err.message);
         });
     };
 
@@ -54,6 +56,9 @@ export default function TodoListsScreen (props, { navigation }) {
                 setData(taskLists);
                 setLoading(false);
             })
+            .catch(err => {
+                setFeedback(err.message);
+            })
         }
     }, [data]);
 
@@ -63,6 +68,12 @@ export default function TodoListsScreen (props, { navigation }) {
                 <UsernameContext.Consumer>
                     {([username, setUsername]) => 
                         <ContainerPurple>
+                            {
+                                feedback ?
+                                <Text style={{ position: 'absolute', marginTop: 50, color: 'red'}}>{feedback}</Text>
+                                :
+                                <></>
+                            }
                             <Text style={[styles.title,{ color: "#ddd"}]}>Mes TodoLists</Text>
                             {
                                 loading ?

@@ -13,6 +13,7 @@ export default function SignInScreen ({props, navigation}) {
     const [loading, setLoading] = useState(false);
 
     const doLogin = (setToken, setUsername) => {
+        setFeedback(null);
         setLoading(true);
         signIn(login, password)
         .then(token => {
@@ -22,7 +23,7 @@ export default function SignInScreen ({props, navigation}) {
             setLoading(false);
         })
         .catch(err => {
-            setFeedback("Nom d'utilisateur ou mot de passe invalide.")
+            setFeedback(err.message)
             setLoading(false);
         })
     };
