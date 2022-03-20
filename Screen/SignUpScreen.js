@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
-import { View, TextInput, Text } from 'react-native'
+import { TextInput, Text } from 'react-native'
 import { signUp } from '../API/todoAPI';
 import { ContainerWhite } from '../components/Container';
-import { CustomButton } from '../components/CustomButton';
+import { CustomButton } from '../components/UI/CustomButton';
 import { styles } from '../components/styles';
 import { TokenContext, UsernameContext } from '../Contexte/Context';
 

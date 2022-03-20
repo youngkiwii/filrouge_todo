@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, ActivityIndicator } from 'react-native'
-import { CustomButton } from '../components/CustomButton';
+import { Text, TextInput, ActivityIndicator } from 'react-native'
+import { CustomButton } from '../components/UI/CustomButton';
 import { styles } from '../components/styles';
 import { TokenContext, UsernameContext } from '../Contexte/Context';
 import { signIn } from '../API/todoAPI';

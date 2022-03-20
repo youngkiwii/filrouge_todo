@@ -2,9 +2,12 @@ import React, {useEffect, useRef} from 'react'
 import {View, StyleSheet, TextInput, Animated} from 'react-native'
 import Svg, {G, Circle} from 'react-native-svg';
 
+//Animation du donuts
 const AnimatedInput = Animated.createAnimatedComponent(TextInput);
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
+
+// Composant permettant d'afficher un Donut Chart en fonction du pourcentage de tâches réalisés
 export default function DonutChart({
     percentage = 0,
     radius = 40,
@@ -14,12 +17,17 @@ export default function DonutChart({
     delay = 0,
     textColor
 }) {
+
+    // Refs
     const animatedValue = useRef(new Animated.Value(0)).current;
     const circleRef = useRef(null);
     const inputRef = useRef(null);
     
+    // Informations du donut
     const halfCircle = radius + strokeWidth;
     const circleCircumference = (2 * Math.PI * radius).toString();
+
+    // Fonction du lancement de l'animation
     const animation = (toValue) => {
         return Animated.timing(animatedValue,{
             toValue,
@@ -29,6 +37,7 @@ export default function DonutChart({
         }).start();
     };
 
+    // Animations du TextInput et du Donut
     useEffect(() => {
         animation(percentage);
         animatedValue.addListener(v => {

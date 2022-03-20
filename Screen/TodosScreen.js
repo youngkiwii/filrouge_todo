@@ -6,7 +6,7 @@ import Input from '../components/UI/Input'
 import TaskCard from '../components/TaskCard'
 
 import { createTask, deleteTaskById, tasks, updateTask } from '../API/todoAPI'
-import { CustomButton } from '../components/CustomButton'
+import { CustomButton } from '../components/UI/CustomButton'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { ContainerWhite } from '../components/Container'
 
@@ -34,11 +34,11 @@ export default function TodosScreen ({ route, navigation }) {
         {label: 'Tâches non réalisées', value: NON_FINISHED_TASKS}
     ]);
 
-
     const changeCount = (value) => {
         setCount(count + value);
     }
 
+    // Tri des tâches
     const selectSorting = (type) => {
         switch(type) {
             case ALL_TASKS:
@@ -55,6 +55,7 @@ export default function TodosScreen ({ route, navigation }) {
         }
     }
 
+    // fonction permettant de créer une tâche
     const doCreateTask = () => {
         if(text !== ""){
             setLoading(true);
@@ -73,6 +74,7 @@ export default function TodosScreen ({ route, navigation }) {
             setFeedback("Veuillez saisir un nom");
     };
 
+    // (Dé)cocher toutes les tâches
     const checkTasks = (boolean) => {
         const all = original.map(item => {
             return {id: item.id, content: item.content, done: boolean, belongsTo: item.belongsTo};
@@ -88,6 +90,7 @@ export default function TodosScreen ({ route, navigation }) {
         setData(all);
     }
 
+    // fonction permettant de supprimer une tâche
     const deleteTask = (item) => {
         deleteTaskById(item.id, token)
         .then(json => {
@@ -99,6 +102,8 @@ export default function TodosScreen ({ route, navigation }) {
             console.log(err);
         });
     };
+
+    // change le compte à chaque changement de la variable data et charge toutes les tâches quand data est vide
     useEffect(() => {
         if (original.length === 0) {
             tasks(username, route.params.id, token)

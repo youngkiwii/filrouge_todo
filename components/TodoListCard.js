@@ -6,10 +6,12 @@ import Svg, {G, Circle} from 'react-native-svg';
 import DonutChart from './UI/DonutChart';
 import { tasks } from '../API/todoAPI';
 
+// Card pour les TodoList
 export default function TodoListCard (props) {
     const [token, setToken] = useContext(TokenContext);
     const [percent, setPercent] = useState(0);
 
+    // Calcule la progression de la TodoList
     useEffect(() => {
         tasks(props.username, props.item.id, token)
         .then(value => {
@@ -32,6 +34,7 @@ export default function TodoListCard (props) {
     );
 }
 
+// Style
 const style = StyleSheet.create({
     card: {
         borderRadius: 25,

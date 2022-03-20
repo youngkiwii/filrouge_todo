@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext} from 'react'
-import { View, Text, FlatList, ActivityIndicator} from 'react-native';
+import { Text, FlatList, ActivityIndicator} from 'react-native';
 import { deleteUser, getUsers } from '../API/todoAPI';
 import { ContainerWhite } from '../components/Container';
 import { styles } from '../components/styles';
 import Card from '../components/Card';
 import { TokenContext } from '../Contexte/Context';
 
+// Écran de l'administration des utilisateurs
 export default function AdminScreen ({navigation}) {
     const [token, setToken] = useContext(TokenContext);
     const [data, setData] = useState([]);

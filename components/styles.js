@@ -11,16 +11,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#2e3357'
     },
+    subtitle: {
+        color: '#2e3357'
+    },
     button: {
-        backgroundColor: 'midnightblue',
+        backgroundColor: '#5450d6',
         paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 10,
     },
     btnOutline: {
-        backgroundColor: 'white',
-        borderWidth: 2,
-        borderColor: 'midnightblue',
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        borderColor: '#5450d6',
         padding: 10,
         borderRadius: 10
     },

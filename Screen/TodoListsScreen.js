@@ -8,6 +8,7 @@ import { createTaskLists, deleteTaskLists } from '../API/todoAPI'
 import {ContainerPurple, ContainerWhite} from '../components/Container'
 import TodoListCard from '../components/TodoListCard'
 
+// Écran des TodoLists
 export default function TodoListsScreen (props, { navigation }) {
     const [username, setUsername] = useContext(UsernameContext);
     const [token, setToken] = useContext(TokenContext);
@@ -15,6 +16,7 @@ export default function TodoListsScreen (props, { navigation }) {
     const [text, setText] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    //Création de TodoLists
     const createTaskListsFct = () => {
         createTaskLists(text, username, token)
         .then(json => {
@@ -26,6 +28,7 @@ export default function TodoListsScreen (props, { navigation }) {
         setText(null);
     };
 
+    // Suppression de TodoList
     const deleteTaskListsFct = (id) => {
         deleteTaskLists(id, token)
         .then(json => {
@@ -36,12 +39,14 @@ export default function TodoListsScreen (props, { navigation }) {
         });
     };
 
+    // Rechargement de la page pour que le fils puisse écouter sur le père
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             setData(data);
         });
     }, [props.navigation])
 
+    // Chargement de todolists
     useEffect(() => {
         if (data.length == 0) {
             taskLists(username, token)

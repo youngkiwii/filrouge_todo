@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { TokenContext } from '../Contexte/Context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
+// Card (Utilisateurs ici)
 export default function Card (props) {
     const [token, setToken] = useContext(TokenContext);
 

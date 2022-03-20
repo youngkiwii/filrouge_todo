@@ -4,35 +4,36 @@ import { TokenContext } from "../Contexte/Context";
 
 const API_URL = 'http://localhost:4000'
 
+// Connexions et Inscriptions
 const SIGN_IN =
     'mutation($username:String!, $password:String!){signIn(username:$username, password:$password)}';
 
 const SIGN_UP =
     'mutation($username:String!, $password:String!){signUp(username:$username, password:$password)}';
 
+// READ
+const GET_USERS = `query { users (where: {roles_NOT_INCLUDES: "admin"}){id username roles}}`
+const TASKS = 'query($username: String!, $id: ID!){tasks (where: {belongsTo: {id: $id, owner: {username: $username}}}) {id content done belongsTo {id title}}}';
 const TASK_LISTS = 
     'query($username: String!) {taskLists(where: { owner: { username: $username } }) { id title }}';
 
+// CREATE
+const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, done: false, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
 const CREATE_TASK_LISTS = 'mutation($title: String!, $username: String!) {createTaskLists(input: { title: $title owner: { connect: { where: { username: $username } } }}) {taskLists {id title owner { username } }}}'
 
+// DELTE
+const DELETE_USER = `mutation ($id: ID!){ deleteUsers (where: {id: $id}) {nodesDeleted relationshipsDeleted}}`
+const DELETE_TASK = 'mutation($id: ID!) {deleteTasks(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
 const DELETE_TASK_LISTS = 'mutation($id: ID!) {deleteTaskLists(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
 
-const TASKS = 'query($username: String!, $id: ID!){tasks (where: {belongsTo: {id: $id, owner: {username: $username}}}) {id content done belongsTo {id title}}}';
-
-const CREATE_TASK = 'mutation($content: String!, $idList: ID!) {createTasks(input: {content: $content, done: false, belongsTo: {connect: {where: {id: $idList}}}}){tasks{id content done belongsTo{ id title }}}}';
-
-const DELETE_TASK = 'mutation($id: ID!) {deleteTasks(where: {id: $id}){nodesDeleted relationshipsDeleted}}'
-
+// UPDATE
 const UPDATE_TASK = `mutation($done: Boolean!, $id: ID!) {
     updateTasks(where: { id: $id }
         update: {done: $done})
     {tasks {id content done belongsTo {id title}}}
   }`
 
-const GET_USERS = `query { users (where: {roles_NOT_INCLUDES: "admin"}){id username roles}}`
-
-const DELETE_USER = `mutation ($id: ID!){ deleteUsers (where: {id: $id}) {nodesDeleted relationshipsDeleted}}`
-
+// Connexion
 export function signIn (username, password) {
     return fetch(API_URL, {
         method: 'POST',
@@ -58,6 +59,7 @@ export function signIn (username, password) {
     })
 }
 
+// Inscription
 export function signUp (login, password) {
     return fetch(API_URL, {
         method: 'POST',
@@ -83,6 +85,33 @@ export function signUp (login, password) {
     })
 }
 
+// READ
+export function tasks(username, id, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: TASKS,
+            variables: {
+                username: username,
+                id: id,
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data.tasks;
+    })
+    .catch(err => {
+        throw err;
+    });
+}
+
 export function taskLists (login, token) {
     return fetch(API_URL, {
         method: 'POST',
@@ -105,6 +134,33 @@ export function taskLists (login, token) {
     })
     .catch(error => {
         throw error
+    })
+}
+
+// CREATE
+export function createTask(content, idList, token) {
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: CREATE_TASK,
+            variables: {
+                content: content,
+                idList: idList
+            }
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.errors != null)
+            throw json.errors[0];
+        return json.data.createTasks;
+    })
+    .catch(err => {
+        throw err;
     })
 }
 
@@ -134,6 +190,8 @@ export function createTaskLists(title, username, token) {
     })
 }
 
+
+// DELETE
 export function deleteTaskLists(id, token) {
     return fetch(API_URL, {
         method: 'POST',
@@ -159,32 +217,6 @@ export function deleteTaskLists(id, token) {
     });
 }
 
-export function tasks(username, id, token) {
-    return fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query: TASKS,
-            variables: {
-                username: username,
-                id: id,
-            }
-        })
-    })
-    .then(response => response.json())
-    .then(json => {
-        if(json.errors != null)
-            throw json.errors[0];
-        return json.data.tasks;
-    })
-    .catch(err => {
-        throw err;
-    });
-}
-
 export function deleteTaskById(id, token) {
     return fetch(API_URL, {
         method: 'POST',
@@ -204,32 +236,6 @@ export function deleteTaskById(id, token) {
         if(json.errors != null)
             throw json.errors[0];
         return json.data;
-    })
-    .catch(err => {
-        throw err;
-    })
-}
-
-export function createTask(content, idList, token) {
-    return fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query: CREATE_TASK,
-            variables: {
-                content: content,
-                idList: idList
-            }
-        })
-    })
-    .then(response => response.json())
-    .then(json => {
-        if(json.errors != null)
-            throw json.errors[0];
-        return json.data.createTasks;
     })
     .catch(err => {
         throw err;

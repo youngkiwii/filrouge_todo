@@ -6,6 +6,7 @@ import { deleteTaskLists, taskLists } from '../API/todoAPI';
 import { TokenContext } from '../Contexte/Context';
 import TodoListCard from '../components/TodoListCard';
 
+// Accès aux todolists des différents utilisateurs
 export default function AdminTodoListsScreen ({route}) {
     const [token, setToken] = useContext(TokenContext);
     const [loading, setLoading] = useState(true);

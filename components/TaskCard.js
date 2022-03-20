@@ -6,6 +6,7 @@ import { TokenContext } from '../Contexte/Context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Menu, MenuTrigger, MenuOption, MenuOptions } from 'react-native-popup-menu';
 
+// Card pour les tâches
 export default function TaskCard (props) {
     const [token, setToken] = useContext(TokenContext);
     const [done, setDone] = useState(props.item.done);
@@ -49,6 +50,7 @@ export default function TaskCard (props) {
     );
 }
 
+//Styles
 const style = StyleSheet.create({
     card: {
         borderRadius: 15,

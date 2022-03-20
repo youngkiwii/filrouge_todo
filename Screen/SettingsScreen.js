@@ -1,17 +1,16 @@
 import React, {useContext} from 'react'
-import { View, Text} from 'react-native'
+import { Text} from 'react-native'
 import { ContainerWhite } from '../components/Container'
-import { CustomButton } from '../components/CustomButton'
+import { CustomButton } from '../components/UI/CustomButton'
 import { styles } from '../components/styles'
 import { TokenContext, UsernameContext } from '../Contexte/Context'
 import { Buffer } from 'buffer'
 
+// Écran de "paramètres" (admin a un bouton en plus)
 export default function SettingsScreen ({ navigation }) {
     const [token, setToken] = useContext(TokenContext);
     const [username, setUsername] = useContext(UsernameContext);
     const decodedJwt = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('ascii'));
-
-
 
     return (
         <ContainerWhite>

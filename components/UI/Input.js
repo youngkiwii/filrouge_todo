@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 
+// Composant d'un TextInput avec un logo cliquable qui lance une fonction
 export default function Input (props) {
     
     return (
@@ -24,6 +25,7 @@ export default function Input (props) {
     )
 }
 
+// Style
 const style = StyleSheet.create({
     container: {
         flexDirection: 'row',
