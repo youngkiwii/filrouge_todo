@@ -14,7 +14,7 @@ This is a university project proposed by the teaching unit Mobile Application De
  ## Get started
  ### Requirements
  To run this app, you must have 3 dependances :
- - Neo4J ( you can change the variable environnement in the .env file located at `./API/.env`
+ - Neo4J ( you can change the variable environnement in the .env file located at `./API/.env` )
  - node ( v14.18.0 )
  - expo
  
