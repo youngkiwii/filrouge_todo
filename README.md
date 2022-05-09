@@ -1,4 +1,4 @@
-# Todo List in React Native
+# Todo Lists in React Native
 This is a university project proposed by the teaching unit Mobile Application Development in third year of bachelor degree at the University of Caen Normandie.
 
  ## Introduction
